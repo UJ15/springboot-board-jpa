@@ -36,6 +36,7 @@ public class Post extends BaseEntity {
         return this.user.equals(user);
     }
 
+    //TODO 네이밍 변경 post.updatePost?? -> post.update
     public void updatePost(String title, String content) {
 
         this.title = title;

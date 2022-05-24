@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.*;
 
 
 public enum ErrorCode {
+    //TODO 메세지 에러 발생시 커스텀 해주기
 
     INVALID_INPUT_REQUEST(BAD_REQUEST, "입력 정보가 유효하지 않습니다."),
 

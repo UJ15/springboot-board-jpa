@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleMethodArgumentValidException() {
+    public ResponseEntity<ErrorResponse> handleMethodArgumentValidException() {
 
         logger.error("MethodArgumentValidException : {}", INVALID_INPUT_REQUEST.getMessage());
 
@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<?> handleIllegalArgumentException() {
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException() {
 
         logger.error("IllegalArgumentException : {}", INVALID_INPUT_REQUEST.getMessage());
 
@@ -47,4 +47,7 @@ public class GlobalExceptionHandler {
 
         return ErrorResponse.toResponseEntity(ACCESS_DENIED);
     }
+
+    //TODO : Excption , RuntimeExcpetion 막기
+    //TODO : error 레벨 낮추기(400대는 DEBUG)
 }
