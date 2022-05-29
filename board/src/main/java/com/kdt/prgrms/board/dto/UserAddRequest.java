@@ -8,10 +8,10 @@ import javax.validation.constraints.NotBlank;
 
 public class UserAddRequest {
 
-    @NotBlank
+    @NotBlank(message = "Name Not to be Blank")
     private final String name;
 
-    @Min(0)
+    @Min(value = 0, message = "Age must be positive")
     private final int age;
 
     private final Hobby hobby;

@@ -1,24 +1,25 @@
 package com.kdt.prgrms.board.exception.custom;
 
+import com.kdt.prgrms.board.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
 
 public class NotFoundException extends RuntimeException{
 
-    private String message;
-    private HttpStatus status;
+    private final ErrorCode errorCode;
 
-    public NotFoundException() {
+    public NotFoundException(ErrorCode errorCode) {
 
+        this.errorCode = errorCode;
     }
 
     @Override
     public String getMessage() {
 
-        return message;
+        return errorCode.getMessage();
     }
 
-    public HttpStatus getStatus() {
+    public ErrorCode getErrorCode() {
 
-        return status;
+        return errorCode;
     }
 }

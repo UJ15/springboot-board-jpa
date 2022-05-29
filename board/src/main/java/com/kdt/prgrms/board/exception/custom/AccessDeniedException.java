@@ -1,24 +1,27 @@
 package com.kdt.prgrms.board.exception.custom;
 
+import com.kdt.prgrms.board.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
+
+import javax.servlet.annotation.ServletSecurity;
 
 public class AccessDeniedException extends RuntimeException {
 
-    private String message;
-    private HttpStatus status;
+    private final ErrorCode errorCode;
 
-    public AccessDeniedException() {
+    public AccessDeniedException(ErrorCode errorCode) {
 
+        this.errorCode = errorCode;
     }
 
     @Override
     public String getMessage() {
 
-        return message;
+        return errorCode.getMessage();
     }
 
-    public HttpStatus getStatus() {
+    public ErrorCode getErrorCode() {
 
-        return status;
+        return errorCode;
     }
 }

@@ -7,6 +7,7 @@ import com.kdt.prgrms.board.entity.post.Post;
 import com.kdt.prgrms.board.entity.post.PostRepository;
 import com.kdt.prgrms.board.entity.user.User;
 import com.kdt.prgrms.board.entity.user.UserRepository;
+import com.kdt.prgrms.board.exception.ErrorCode;
 import com.kdt.prgrms.board.exception.custom.AccessDeniedException;
 import com.kdt.prgrms.board.exception.custom.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 public class PostService {
 
     private final PostRepository postRepository;
@@ -36,10 +36,12 @@ public class PostService {
 
         long userId = postAddRequest.getUserId();
 
-        User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         postRepository.save(postAddRequest.toEntity(user));
     }
+
+    @Transactional(readOnly = true)
 
     public List<PostResponse> getPosts() {
 
@@ -48,9 +50,11 @@ public class PostService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+
     public PostResponse getPostById(long id) {
 
-        Post post = postRepository.findById(id).orElseThrow(NotFoundException::new);
+        Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorCode.POST_NOT_FOUND));
 
         return PostResponse.from(post);
     }
@@ -63,14 +67,14 @@ public class PostService {
         }
 
         long requestUserId = postUpdateRequest.getUserId();
-        User user = userRepository.findById(requestUserId).orElseThrow(NotFoundException::new);
-        Post post = postRepository.findById(id).orElseThrow(NotFoundException::new);
+        User user = userRepository.findById(requestUserId).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+        Post post = postRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorCode.POST_NOT_FOUND));
 
         if (!post.isSameUser(user)) {
-            throw new AccessDeniedException();
+            throw new AccessDeniedException(ErrorCode.POST_ACCESS_DENIED);
         }
 
-        post.updatePost(postUpdateRequest.getTitle(), postUpdateRequest.getContent());
+        post.update(postUpdateRequest.getTitle(), postUpdateRequest.getContent());
         postRepository.save(post);
     }
 }

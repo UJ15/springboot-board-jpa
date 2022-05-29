@@ -5,10 +5,12 @@ import com.kdt.prgrms.board.exception.custom.AccessDeniedException;
 import com.kdt.prgrms.board.exception.custom.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import static com.kdt.prgrms.board.exception.ErrorCode.*;
 
@@ -20,43 +22,58 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentValidException() {
 
-        logger.debug("MethodArgumentValidException : {}", INVALID_INPUT_REQUEST.getMessage());
+        logger.warn("MethodArgumentValidException : {}", INVALID_INPUT_REQUEST.getMessage());
 
         return ErrorResponse.toResponseEntity(INVALID_INPUT_REQUEST);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException exception) {
 
-        logger.debug("IllegalArgumentException : {}", INVALID_INPUT_REQUEST.getMessage());
+        logger.warn("IllegalArgumentException : {}", exception.getMessage());
 
         return ErrorResponse.toResponseEntity(INVALID_INPUT_REQUEST);
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFoundException() {
+    public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException exception) {
 
-        logger.debug("NotFoundException : {}", REQUEST_NOT_FOUND.getMessage());
+        logger.warn("NotFoundException : {}", exception.getMessage());
 
-        return ErrorResponse.toResponseEntity(REQUEST_NOT_FOUND);
+        return ErrorResponse.toResponseEntity(exception.getErrorCode());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorResponse> handleAccessDeniedException() {
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException exception) {
 
-        logger.debug("AccessDeniedException : {}", ACCESS_DENIED.getMessage());
+        logger.warn("AccessDeniedException : {}", exception.getMessage());
 
-        return ErrorResponse.toResponseEntity(ACCESS_DENIED);
+        return ErrorResponse.toResponseEntity(exception.getErrorCode());
     }
 
     @ExceptionHandler(InvalidFormatException.class)
     public ResponseEntity<ErrorResponse> handleInvalidException() {
 
-        logger.debug("InvalidFormatException : {}", INVALID_INPUT_REQUEST);
+        logger.warn("InvalidFormatException : {}", INVALID_INPUT_REQUEST);
 
         return ErrorResponse.toResponseEntity(INVALID_INPUT_REQUEST);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException() {
+
+        logger.error("RuntimeException : {}", "RuntimeException");
+
+        return ErrorResponse.toResponseEntity(INVALID_INPUT_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException() {
+
+        logger.error("Exception : {}", "Exception");
+
+        return ErrorResponse.toResponseEntity(INVALID_INPUT_REQUEST);
+    }
 
     //TODO : Excption , RuntimeExcpetion 막기
     //TODO : error 레벨 낮추기(400대는 DEBUG)

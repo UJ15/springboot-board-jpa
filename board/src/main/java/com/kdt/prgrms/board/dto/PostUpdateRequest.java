@@ -7,13 +7,13 @@ import javax.validation.constraints.Positive;
 
 public class PostUpdateRequest {
 
-    @Positive
+    @Positive(message = "Wrong User Id .. Please Check")
     private final long userId;
 
-    @NotBlank
+    @NotBlank(message = "Title Not to be Blank")
     private final String title;
 
-    @NotBlank
+    @NotBlank(message = "Content Not to be Blank")
     private final String content;
 
     public PostUpdateRequest(long userId, String title, String content) {

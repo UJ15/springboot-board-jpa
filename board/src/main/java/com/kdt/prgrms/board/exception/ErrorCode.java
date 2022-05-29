@@ -6,15 +6,15 @@ import static org.springframework.http.HttpStatus.*;
 
 
 public enum ErrorCode {
-    //TODO 메세지 에러 발생시 커스텀 해주기
-
     INVALID_INPUT_REQUEST(BAD_REQUEST, "입력 정보가 유효하지 않습니다."),
 
-    REQUEST_NOT_FOUND(NOT_FOUND, "해당 요청을 찾을 수 없습니다."),
+    POST_NOT_FOUND(NOT_FOUND, "해당 요청을 찾을 수 없습니다."),
+
+    USER_NOT_FOUND(NOT_FOUND, "해당 사용자를 찾을 수 없습니다."),
 
     SERVER_ERROR(INTERNAL_SERVER_ERROR, "요청 수행을 실패했습니다."),
 
-    ACCESS_DENIED(FORBIDDEN, "접근이 금지된 요청입니다.");
+    POST_ACCESS_DENIED(FORBIDDEN, "게시물 접근 권한이 없습니다.");
 
     private final HttpStatus status;
     private final String message;

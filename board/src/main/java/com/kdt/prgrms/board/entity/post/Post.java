@@ -37,7 +37,7 @@ public class Post extends BaseEntity {
     }
 
     //TODO 네이밍 변경 post.updatePost?? -> post.update
-    public void updatePost(String title, String content) {
+    public void update(String title, String content) {
 
         this.title = title;
         this.content = content;
