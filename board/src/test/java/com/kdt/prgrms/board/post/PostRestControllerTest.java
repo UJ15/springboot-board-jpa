@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -144,7 +145,7 @@ public class PostRestControllerTest {
             @DisplayName("Post를 json타입의 리스트로 반환한다..")
             void itReturnPostsByFson() throws Exception {
 
-                when(postService.getPosts()).thenReturn(response);
+                when(postService.getPosts(any(Pageable.class))).thenReturn(response);
 
                 mockMvc.perform(get(url))
                         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

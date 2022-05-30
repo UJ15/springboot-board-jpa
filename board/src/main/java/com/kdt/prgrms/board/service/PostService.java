@@ -10,6 +10,7 @@ import com.kdt.prgrms.board.entity.user.UserRepository;
 import com.kdt.prgrms.board.exception.ErrorCode;
 import com.kdt.prgrms.board.exception.custom.AccessDeniedException;
 import com.kdt.prgrms.board.exception.custom.NotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,9 +44,9 @@ public class PostService {
 
     @Transactional(readOnly = true)
 
-    public List<PostResponse> getPosts() {
+    public List<PostResponse> getPosts(Pageable pageable) {
 
-        return postRepository.findAll().stream()
+        return postRepository.findWithPagination(pageable).stream()
                 .map(PostResponse::from)
                 .toList();
     }

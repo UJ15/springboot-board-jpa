@@ -4,6 +4,9 @@ import com.kdt.prgrms.board.dto.PostAddRequest;
 import com.kdt.prgrms.board.dto.PostResponse;
 import com.kdt.prgrms.board.dto.PostUpdateRequest;
 import com.kdt.prgrms.board.service.PostService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,9 +30,9 @@ public class PostRestController {
     }
 
     @GetMapping
-    public List<PostResponse> getPosts() {
+    public List<PostResponse> getPosts(@PageableDefault(size = 10, sort = {"createdAt"}, direction = Sort.Direction.DESC) Pageable pageable) {
 
-       return postService.getPosts();
+       return postService.getPosts(pageable);
     }
 
     @GetMapping("{id}")

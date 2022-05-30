@@ -18,6 +18,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
@@ -116,13 +118,15 @@ public class PostServiceTest {
                     .build()
             );
 
+            final PageRequest pageRequest = PageRequest.of(1, 10);
+
             @Test
             @DisplayName("postDto 리스트를 반환한다.")
             void itReturnPostDtoList() {
 
-                when(postRepository.findAll()).thenReturn(posts);
+                when(postRepository.findWithPagination(any(Pageable.class))).thenReturn(posts);
 
-                List<PostResponse> actual = postService.getPosts();
+                List<PostResponse> actual = postService.getPosts(pageRequest);
 
                 Assertions.assertThat(actual.size()).isEqualTo(1);
             }
